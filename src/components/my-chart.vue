@@ -1,9 +1,12 @@
 ﻿<template>
-  <Doughnut :data="chartData" :options="chartOptions" />
+  <div class="chart-container">
+    <Doughnut :data="chartData" :options="chartOptions" />
+  </div>
 </template>
 
 <script setup lang="ts">
 import { ArcElement, Chart as ChartJS, Legend, Title, Tooltip } from "chart.js";
+import { color } from "chart.js/helpers";
 import { Doughnut } from "vue-chartjs";
 
 // 註冊元件，不然圖表不會顯示
@@ -21,11 +24,26 @@ const chartData = {
 };
 
 const chartOptions = {
-  responsive: true,
+  backgroundColor: "#",
+  responsive: true, // 隨著容器放大縮小
+  maintainAspectRatio: true, // 維持長寬高度比例, 不會因為容器為長方形而被拉成橢圓形
+  aspectRatio: 1, // 保持 1:1 比例（正方形）
   plugins: {
     legend: {
-      position: "bottom",
+      position: "bottom" as const,
     },
   },
+  hoverOffset: 4,
+  cutout: 50,
 };
 </script>
+
+<style scoped>
+.chart-container {
+  max-width: 300px;
+  max-height: 300px;
+  width: 100%;
+  margin: 0 auto;
+  position: relative;
+}
+</style>
